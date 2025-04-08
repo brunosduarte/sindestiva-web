@@ -18,7 +18,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Menu, X, User, LogOut, FileText, Settings } from 'lucide-react';
 
-const menuItems = [
+// Links públicos visíveis para todos os usuários
+const publicMenuItems = [
   { label: 'Início', href: '/' },
   { label: 'Notícias', href: '/noticias' },
   { label: 'Sobre', href: '/sobre' },
@@ -41,20 +42,20 @@ export function Header() {
       <div className="container flex items-center justify-between h-16 px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <Image 
-            src="/images/logo.png" 
-            alt="Logo Sindicato dos Estivadores de Rio Grande" 
-            width={50} 
-            height={50}
+            src="logo.svg" 
+            alt="Sindestiva Rio Grande" 
+            width={150} 
+            height={150}
             className="h-10 w-auto"
           />
           <span className="hidden font-bold text-xl md:inline-block">
-            Estivadores de Rio Grande
+            Sindicato dos Estivadores do Porto de Rio Grande
           </span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          {menuItems.map((item) => (
+          {publicMenuItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -98,6 +99,12 @@ export function Header() {
                     <span>Painel Administrativo</span>
                   </DropdownMenuItem>
                 </Link>
+                <Link href="/admin/noticias">
+                  <DropdownMenuItem>
+                    <FileText className="w-4 h-4 mr-2" />
+                    <span>Gerenciar Notícias</span>
+                  </DropdownMenuItem>
+                </Link>
                 <Link href="/admin/perfil">
                   <DropdownMenuItem>
                     <User className="w-4 h-4 mr-2" />
@@ -112,8 +119,8 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button asChild variant="default" size="sm">
-              <Link href="/login">Entrar</Link>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/login">Área Restrita</Link>
             </Button>
           )}
 
@@ -137,7 +144,7 @@ export function Header() {
                   </SheetTrigger>
                 </div>
                 <nav className="flex flex-col gap-4 py-6">
-                  {menuItems.map((item) => (
+                  {publicMenuItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
@@ -174,6 +181,12 @@ export function Header() {
                             Painel Administrativo
                           </Button>
                         </Link>
+                        <Link href="/admin/noticias" onClick={() => setIsMobileMenuOpen(false)}>
+                          <Button variant="outline" className="w-full justify-start">
+                            <FileText className="w-4 h-4 mr-2" />
+                            Gerenciar Notícias
+                          </Button>
+                        </Link>
                         <Link href="/admin/perfil" onClick={() => setIsMobileMenuOpen(false)}>
                           <Button variant="outline" className="w-full justify-start">
                             <User className="w-4 h-4 mr-2" />
@@ -195,7 +208,7 @@ export function Header() {
                   ) : (
                     <Button asChild variant="default" className="w-full">
                       <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                        Entrar
+                        Área Restrita
                       </Link>
                     </Button>
                   )}

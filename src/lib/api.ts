@@ -10,16 +10,27 @@ import {
   NewsQueryParams
 } from '@/types';
 
-// Cliente axios com URL base da API
-const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+// URL base da API
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+
+// Cliente axios para endpoints públicos (sem autenticação)
+const publicApi = axios.create({
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Interceptor para adicionar token de autenticação
-api.interceptors.request.use(async (config) => {
+// Cliente axios para endpoints protegidos (com autenticação)
+const protectedApi = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Interceptor para adicionar token de autenticação às requisições protegidas
+protectedApi.interceptors.request.use(async (config) => {
   if (typeof window !== 'undefined') {
     const session = await getSession();
     if (session?.accessToken) {
@@ -29,58 +40,24 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
-// Autenticação
-export async function loginUser(credentials: LoginCredentials): Promise<LoginResponse> {
-  const response = await api.post<LoginResponse>('/auth/login', credentials);
+// ENDPOINTS PÚBLICOS
+// =================================================================
+
+// Notícias - funções públicas
+export async function fetchPublicNews(params?: NewsQueryParams) {
+  const response = await publicApi.get<PaginatedResponse<News>>('/news', { params });
   return response.data;
 }
 
-export async function registerUser(userData: RegisterCredentials): Promise<LoginResponse> {
-  const response = await api.post<LoginResponse>('/auth/register', userData);
+export async function fetchPublicNewsById(id: string) {
+  const response = await publicApi.get<News>(`/news/${id}`);
   return response.data;
 }
 
-export async function getUserProfile() {
-  const response = await api.get('/auth/profile');
-  return response.data.user;
-}
-
-// Notícias - funções do lado do cliente (usadas nos componentes React)
-export async function fetchNews(params?: NewsQueryParams) {
-  const response = await api.get<PaginatedResponse<News>>('/news', { params });
-  return response.data;
-}
-
-export async function fetchNewsById(id: string) {
-  const response = await api.get<News>(`/news/${id}`);
-  return response.data;
-}
-
-export async function createNews(newsData: NewsFormData) {
-  const response = await api.post<News>('/news', newsData);
-  return response.data;
-}
-
-export async function updateNews(id: string, newsData: Partial<NewsFormData>) {
-  const response = await api.put<News>(`/news/${id}`, newsData);
-  return response.data;
-}
-
-export async function deleteNews(id: string) {
-  const response = await api.delete(`/news/${id}`);
-  return response.data;
-}
-
-export async function fetchMyNews(params?: NewsQueryParams) {
-  const response = await api.get<PaginatedResponse<News>>('/news/my', { params });
-  return response.data;
-}
-
-// Notícias - funções do lado do servidor (usadas nas server components)
+// Funções do lado do servidor (usadas nas server components)
 export async function getLatestNews(limit: number = 3): Promise<News[]> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-    const response = await fetch(`${apiUrl}/news?limit=${limit}`, {
+    const response = await fetch(`${API_BASE_URL}/news?limit=${limit}`, {
       cache: 'no-cache', // Desativar cache para sempre obter as notícias mais recentes
     });
     
@@ -98,8 +75,7 @@ export async function getLatestNews(limit: number = 3): Promise<News[]> {
 
 export async function getAllNews(page: number = 1, limit: number = 10, tag?: string, search?: string): Promise<PaginatedResponse<News>> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-    let url = `${apiUrl}/news?page=${page}&limit=${limit}`;
+    let url = `${API_BASE_URL}/news?page=${page}&limit=${limit}`;
     
     if (tag) {
       url += `&tag=${encodeURIComponent(tag)}`;
@@ -134,8 +110,7 @@ export async function getAllNews(page: number = 1, limit: number = 10, tag?: str
 
 export async function getNewsDetails(id: string): Promise<News | null> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-    const response = await fetch(`${apiUrl}/news/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/news/${id}`, {
       cache: 'no-cache', 
     });
     
@@ -151,4 +126,54 @@ export async function getNewsDetails(id: string): Promise<News | null> {
     console.error(`Erro ao buscar notícia com ID ${id}:`, error);
     return null;
   }
+}
+
+// ENDPOINTS PROTEGIDOS
+// =================================================================
+
+// Autenticação
+export async function loginUser(credentials: LoginCredentials): Promise<LoginResponse> {
+  const response = await publicApi.post<LoginResponse>('/auth/login', credentials);
+  return response.data;
+}
+
+export async function registerUser(userData: RegisterCredentials): Promise<LoginResponse> {
+  const response = await publicApi.post<LoginResponse>('/auth/register', userData);
+  return response.data;
+}
+
+export async function getUserProfile() {
+  const response = await protectedApi.get('/auth/profile');
+  return response.data.user;
+}
+
+// Notícias - funções do lado do cliente para administração (protegidas)
+export async function fetchNews(params?: NewsQueryParams) {
+  const response = await protectedApi.get<PaginatedResponse<News>>('/news', { params });
+  return response.data;
+}
+
+export async function fetchNewsById(id: string) {
+  const response = await protectedApi.get<News>(`/news/${id}`);
+  return response.data;
+}
+
+export async function createNews(newsData: NewsFormData) {
+  const response = await protectedApi.post<News>('/news', newsData);
+  return response.data;
+}
+
+export async function updateNews(id: string, newsData: Partial<NewsFormData>) {
+  const response = await protectedApi.put<News>(`/news/${id}`, newsData);
+  return response.data;
+}
+
+export async function deleteNews(id: string) {
+  const response = await protectedApi.delete(`/news/${id}`);
+  return response.data;
+}
+
+export async function fetchMyNews(params?: NewsQueryParams) {
+  const response = await protectedApi.get<PaginatedResponse<News>>('/news/my', { params });
+  return response.data;
 }

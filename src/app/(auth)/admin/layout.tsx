@@ -11,6 +11,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   // Verificar se o usuário está autenticado
   const session = await getServerSession(authOptions);
   
+  // Se não estiver autenticado, redirecionar para a página de login
   if (!session) {
     redirect('/login?callbackUrl=/admin');
   }

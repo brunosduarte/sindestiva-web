@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -50,6 +50,37 @@ export default function LoginPage() {
     },
   });
 
+  // Função de envio do formulário
+  const onSubmit = async (data: LoginFormValues) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError('Credenciais inválidas. Verifique seu email e senha.');
+        toast.error('Falha ao fazer login');
+      } else {
+        toast.success('Login realizado com sucesso!');
+        
+        // Redirecionar para a página anterior ou para o painel admin
+        const callbackUrl = searchParams.get('callbackUrl') || '/admin';
+        router.push(callbackUrl);
+      }
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      setError('Ocorreu um erro durante o login. Tente novamente.');
+      toast.error('Erro ao tentar fazer login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="container flex items-center justify-center min-h-screen py-12">
       <Card className="w-full max-w-md mx-auto">
@@ -62,7 +93,7 @@ export default function LoginPage() {
               height={80}
             />
           </div>
-          <CardTitle className="text-2xl font-bold">Entrar no Sistema</CardTitle>
+          <CardTitle className="text-2xl font-bold">Área Restrita</CardTitle>
           <CardDescription>
             Acesse o painel administrativo para gerenciar o conteúdo do site
           </CardDescription>
@@ -113,11 +144,19 @@ export default function LoginPage() {
                     Entrando...
                   </>
                 ) : (
-                  'Entrar'
+                  <>
+                    <Lock className="mr-2 h-4 w-4" />
+                    Entrar
+                  </>
                 )}
               </Button>
             </form>
           </Form>
+          
+          <div className="text-sm text-center text-muted-foreground mt-4">
+            <p>Este acesso é exclusivo para administradores do site.</p>
+            <p>Se você é um visitante, pode navegar pelo site normalmente.</p>
+          </div>
         </CardContent>
         <CardFooter className="flex justify-center text-sm">
           <p>
@@ -130,35 +169,4 @@ export default function LoginPage() {
       </Card>
     </div>
   );
-
-  // Função de envio do formulário
-  const onSubmit = async (data: LoginFormValues) => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const result = await signIn('credentials', {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError('Credenciais inválidas. Verifique seu email e senha.');
-        toast.error('Falha ao fazer login');
-      } else {
-        toast.success('Login realizado com sucesso!');
-        
-        // Redirecionar para a página anterior ou para o painel admin
-        const callbackUrl = searchParams.get('callbackUrl') || '/admin';
-        router.push(callbackUrl);
-      }
-    } catch (error) {
-      console.error('Erro ao fazer login:', error);
-      setError('Ocorreu um erro durante o login. Tente novamente.');
-      toast.error('Erro ao tentar fazer login');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 }

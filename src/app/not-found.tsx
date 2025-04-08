@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function NotFound() {
@@ -21,7 +22,10 @@ export default function NotFound() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button asChild size="lg">
-            <Link href="/">Página Inicial</Link>
+            <Link href="/" className="flex items-center">
+              <ArrowLeft className="mr-2 h-5 w-5" />
+              Página Inicial
+            </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
             <Link href="/noticias">Ver Notícias</Link>

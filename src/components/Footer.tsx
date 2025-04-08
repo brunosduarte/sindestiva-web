@@ -6,20 +6,20 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-gray-900 text-gray-200">
+    <footer className="bg-linear-65 from-red-950 to-red-700 text-gray-200">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo e Informações */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Image 
-                src="/images/logo.png" 
-                alt="Logo Sindicato dos Estivadores de Rio Grande" 
+                src="logo.svg" 
+                alt="Sindestiva Rio Grande" 
                 width={50} 
                 height={50}
                 className="h-10 w-auto"
               />
-              <span className="font-bold text-xl">Estivadores de Rio Grande</span>
+              <span className="font-bold text-xl">Sindestiva Rio Grande</span>
             </div>
             <p className="text-gray-400 text-sm mt-4">
               Defendendo os direitos e promovendo o bem-estar dos trabalhadores portuários de Rio Grande desde sua fundação.
@@ -70,20 +70,26 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <span className="text-gray-400">
-                  Av. dos Estivadores, 1234<br />
-                  Rio Grande, RS - CEP 96200-000
+                  Rua 24 de Maio, 673<br />
+                  Rio Grande, RS - CEP 96200-001
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary shrink-0" />
-                <a href="tel:+555332311234" className="text-gray-400 hover:text-white transition-colors">
-                  (53) 3231-1234
+                <a href="tel:+555332313166" className="text-gray-400 hover:text-white transition-colors">
+                  (53) 3231-3166
+
+                </a>
+                <Phone className="h-5 w-5 text-primary shrink-0" />
+                <a href="tel:+555332326771" className="text-gray-400 hover:text-white transition-colors">
+                  (53) 3232-6771
+
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary shrink-0" />
                 <a href="mailto:contato@estivadoresriogrande.org.br" className="text-gray-400 hover:text-white transition-colors">
-                  contato@estivadoresriogrande.org.br
+                  contato@sindestivarg.com.br
                 </a>
               </li>
             </ul>
@@ -121,7 +127,7 @@ export function Footer() {
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 text-sm">
           <p>
-            &copy; {currentYear} BDSystems. Sindicato dos Estivadores de Rio Grande. Todos os direitos reservados.
+            &copy; {currentYear} BDSystems. Todos os direitos reservados. Sindicato dos Estivadores e dos Trabalhadores em Carvão e Mineral de Rio Grande, Pelotas e São José do Norte.
           </p>
         </div>
       </div>

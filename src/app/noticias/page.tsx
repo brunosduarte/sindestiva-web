@@ -8,8 +8,8 @@ import { NewsCard } from '@/components/NewsCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-// import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const metadata: Metadata = {
   title: 'Notícias',
@@ -22,6 +22,30 @@ interface NewsPageProps {
     search?: string;
     tag?: string;
   };
+}
+
+// Componente de loading para notícias
+function NewsCardSkeleton() {
+  return (
+    <div className="space-y-3">
+      <div className="aspect-video w-full bg-gray-200 rounded-lg" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+    </div>
+  );
+}
+
+function NewsLoading() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[...Array(6)].map((_, i) => (
+        <NewsCardSkeleton key={i} />
+      ))}
+    </div>
+  );
 }
 
 export default async function NewsPage({ searchParams }: NewsPageProps) {
@@ -66,7 +90,7 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <div className="lg:col-span-3">
-          <Suspense fallback={<p>Carregando notícias...</p>}>
+          <Suspense fallback={<NewsLoading />}>
             {news && news.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {news.map((item) => (

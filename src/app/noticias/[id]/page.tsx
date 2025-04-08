@@ -7,17 +7,17 @@ import { ptBR } from 'date-fns/locale';
 import { 
   ArrowLeft, 
   Calendar, 
-  // Clock, 
   User, 
-  Tag 
+  Tag,
+  Share2
 } from 'lucide-react';
 
 import { getNewsDetails, getLatestNews } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-// import { Separator } from '@/components/ui/separator';
-// import { NewsCard } from '@/components/NewsCard';
+import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface NewsDetailPageProps {
   params: {
@@ -44,6 +44,27 @@ export async function generateMetadata({ params }: NewsDetailPageProps): Promise
       images: news.imageUrl ? [news.imageUrl] : [],
     },
   };
+}
+
+// Componente de carregamento
+function NewsDetailSkeleton() {
+  return (
+    <div className="space-y-6 max-w-3xl">
+      <Skeleton className="h-10 w-3/4" />
+      <div className="flex gap-4">
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-6 w-32" />
+      </div>
+      <Skeleton className="h-64 w-full rounded-lg" />
+      <div className="space-y-4">
+        <Skeleton className="h-6 w-full" />
+        <Skeleton className="h-6 w-full" />
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="h-6 w-5/6" />
+        <Skeleton className="h-6 w-full" />
+      </div>
+    </div>
+  );
 }
 
 export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
@@ -122,7 +143,39 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             )}
 
             <div className="mt-4 text-lg leading-relaxed">
-              <div className="news-content" dangerouslySetInnerHTML={{ __html: news.content }} />
+              <div className="news-content prose prose-blue max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: news.content }} />
+            </div>
+            
+            <Separator className="my-8" />
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Share2 className="h-5 w-5 text-muted-foreground" />
+                <span className="font-medium">Compartilhar:</span>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" asChild>
+                  <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                    typeof window !== 'undefined' ? window.location.href : ''
+                  )}`} target="_blank" rel="noopener noreferrer">
+                    Facebook
+                  </a>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                    typeof window !== 'undefined' ? window.location.href : ''
+                  )}&text=${encodeURIComponent(news.title)}`} target="_blank" rel="noopener noreferrer">
+                    Twitter
+                  </a>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                    `${news.title} - ${typeof window !== 'undefined' ? window.location.href : ''}`
+                  )}`} target="_blank" rel="noopener noreferrer">
+                    WhatsApp
+                  </a>
+                </Button>
+              </div>
             </div>
           </article>
         </div>
@@ -163,32 +216,20 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Compartilhar</CardTitle>
+              <CardTitle className="text-lg">Informações</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <Button variant="outline" className="w-full" asChild>
-                  <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                    typeof window !== 'undefined' ? window.location.href : ''
-                  )}`} target="_blank" rel="noopener noreferrer">
-                    Compartilhar no Facebook
-                  </a>
-                </Button>
-                <Button variant="outline" className="w-full" asChild>
-                  <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                    typeof window !== 'undefined' ? window.location.href : ''
-                  )}&text=${encodeURIComponent(news.title)}`} target="_blank" rel="noopener noreferrer">
-                    Compartilhar no Twitter
-                  </a>
-                </Button>
-                <Button variant="outline" className="w-full" asChild>
-                  <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                    `${news.title} - ${typeof window !== 'undefined' ? window.location.href : ''}`
-                  )}`} target="_blank" rel="noopener noreferrer">
-                    Compartilhar no WhatsApp
-                  </a>
-                </Button>
-              </div>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                O Sindicato dos Estivadores de Rio Grande trabalha 
+                constantemente para manter a categoria informada sobre 
+                todas as questões relevantes do setor portuário.
+              </p>
+              <Button asChild variant="outline" className="w-full">
+                <Link href="/sobre">Conheça nossa história</Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full">
+                <Link href="/contato">Entre em contato</Link>
+              </Button>
             </CardContent>
           </Card>
         </div>
