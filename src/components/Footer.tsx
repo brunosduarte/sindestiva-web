@@ -89,7 +89,7 @@ export function Footer() {
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary shrink-0" />
                 <a href="mailto:contato@estivadoresriogrande.org.br" className="text-gray-400 hover:text-white transition-colors">
-                  contato@sindestivarg.com.br
+                  contato@estivariogrande.com.br
                 </a>
               </li>
             </ul>

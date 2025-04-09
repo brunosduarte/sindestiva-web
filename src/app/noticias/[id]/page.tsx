@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: NewsDetailPageProps): Promise
 }
 
 // Componente de carregamento
-function NewsDetailSkeleton() {
+export function NewsDetailSkeleton() {
   return (
     <div className="space-y-6 max-w-3xl">
       <Skeleton className="h-10 w-3/4" />

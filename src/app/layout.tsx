@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
-import { ThemeProvider } from '@/components/theme-provider';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { AuthProvider } from '@/components/AuthProvider';
@@ -27,12 +26,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
           <QueryProvider>
             <AuthProvider>
               <div className="flex flex-col min-h-screen">
@@ -45,7 +38,6 @@ export default function RootLayout({
               <Toaster />
             </AuthProvider>
           </QueryProvider>
-        </ThemeProvider>
       </body>
     </html>
   );

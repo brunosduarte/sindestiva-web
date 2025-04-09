@@ -16,13 +16,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Menu, X, User, LogOut, FileText, Settings } from 'lucide-react';
+import { Menu, X, User, LogOut, FileText } from 'lucide-react';
 
 // Links públicos visíveis para todos os usuários
 const publicMenuItems = [
   { label: 'Início', href: '/' },
   { label: 'Notícias', href: '/noticias' },
-  { label: 'Sobre', href: '/sobre' },
+  { label: 'Acordos/Convenções', href: '/acordos-convencoes' },
   { label: 'História', href: '/historia' },
   { label: 'Serviços', href: '/servicos' },
   { label: 'Contato', href: '/contato' },
@@ -49,7 +49,7 @@ export function Header() {
             className="h-10 w-auto"
           />
           <span className="hidden font-bold text-xl md:inline-block">
-            Sindicato dos Estivadores do Porto de Rio Grande
+            Sindicato dos Estivadores de Rio Grande
           </span>
         </Link>
 

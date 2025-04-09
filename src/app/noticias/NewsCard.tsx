@@ -3,7 +3,14 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Calendar, ArrowRight } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Card, 
+  // CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { News } from '@/types';
@@ -58,7 +65,7 @@ export function NewsCard({ news, compact = false }: NewsCardProps) {
           </div>
           <CardDescription className="text-xs flex items-center gap-1">
             <Calendar className="h-3 w-3" />
-            {formattedDate}
+            {formattedDate} • {authorName}
           </CardDescription>
         </div>
         <CardTitle className="text-xl leading-tight line-clamp-2 group-hover:text-primary transition-colors">

@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { NewsCard } from '@/components/NewsCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getLatestNews } from '@/lib/api';
-import { ArrowRight, Ship, Award, FileText, Briefcase, LifeBuoy, Users } from 'lucide-react';
+import { ArrowRight, Ship, Award, FileText, Briefcase, Users, Ambulance, Handshake } from 'lucide-react';
 
 // Componente de carregamento para notícias
 function NewsCardSkeleton() {
@@ -52,7 +52,7 @@ export default async function Home() {
         <div className="relative z-10 container mx-auto px-4 py-24 md:py-32">
           <div className="max-w-2xl">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
-              Sindicato dos Estivadores do Porto de Rio Grande
+              Sindicato dos Estivadores de Rio Grande
             </h1>
             <p className="text-xl text-gray-300 mb-8">
               Defendendo os direitos e representando os interesses da categoria desde sua fundação. Juntos somos mais fortes!
@@ -80,6 +80,46 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="transition-all hover:shadow-md">
+              <CardHeader>
+                <div className="bg-primary/10 p-3 w-fit rounded-lg mb-4">
+                  <Handshake className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle>Defesa do Trabalho/Trabalhador</CardTitle>
+                <CardDescription>Lutando sempre pela categoria</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>Dedicação e valorização ao trabalho portuário, defendendo os direitos do trabalhador e sempre lutando por melhores condições e aprimoramento do trabalho.</p>
+              </CardContent>
+              <CardFooter>
+                <Button asChild variant="ghost" className="p-0 flex items-center text-primary">
+                  <Link href="/servicos#capacitacao">
+                    Saiba Mais <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+
+            <Card className="transition-all hover:shadow-md">
+              <CardHeader>
+                <div className="bg-primary/10 p-3 w-fit rounded-lg mb-4">
+                  <Ambulance className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle>Assistência Médica</CardTitle>
+                <CardDescription>Cuidando da saúde dos trabalhadores</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>Convênios médicos, odontológicos e atendimento especializado para trabalhadores associados e seus dependentes.</p>
+              </CardContent>
+              <CardFooter>
+                <Button asChild variant="ghost" className="p-0 flex items-center text-primary">
+                  <Link href="/servicos#saude">
+                    Saiba Mais <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+
             <Card className="transition-all hover:shadow-md">
               <CardHeader>
                 <div className="bg-primary/10 p-3 w-fit rounded-lg mb-4">
@@ -100,45 +140,7 @@ export default async function Home() {
               </CardFooter>
             </Card>
 
-            <Card className="transition-all hover:shadow-md">
-              <CardHeader>
-                <div className="bg-primary/10 p-3 w-fit rounded-lg mb-4">
-                  <LifeBuoy className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle>Assistência Médica</CardTitle>
-                <CardDescription>Cuidando da saúde dos trabalhadores</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Convênios médicos, odontológicos e atendimento especializado para trabalhadores associados e seus dependentes.</p>
-              </CardContent>
-              <CardFooter>
-                <Button asChild variant="ghost" className="p-0 flex items-center text-primary">
-                  <Link href="/servicos#saude">
-                    Saiba Mais <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
 
-            <Card className="transition-all hover:shadow-md">
-              <CardHeader>
-                <div className="bg-primary/10 p-3 w-fit rounded-lg mb-4">
-                  <Award className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle>Qualificação Profissional</CardTitle>
-                <CardDescription>Cursos e treinamentos especializados</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Programas de capacitação, cursos técnicos e treinamentos para aprimoramento profissional e segurança no trabalho.</p>
-              </CardContent>
-              <CardFooter>
-                <Button asChild variant="ghost" className="p-0 flex items-center text-primary">
-                  <Link href="/servicos#capacitacao">
-                    Saiba Mais <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
           </div>
         </div>
       </section>

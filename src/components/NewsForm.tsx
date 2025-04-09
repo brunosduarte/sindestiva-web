@@ -52,7 +52,7 @@ const newsFormSchema = z.object({
   tags: z.string().optional(),
 });
 
-type FormValues = z.infer<typeof newsFormSchema>;
+type NewsFormValues = z.infer<typeof newsFormSchema>;
 
 interface NewsFormProps {
   initialData?: News;
@@ -65,7 +65,7 @@ export function NewsForm({ initialData, isEditing = false }: NewsFormProps) {
   const [editorContent, setEditorContent] = useState('');
 
   // Preparar valores iniciais
-  const defaultValues: Partial<FormValues> = {
+  const defaultValues: Partial<NewsFormValues> = {
     title: initialData?.title || '',
     summary: initialData?.summary || '',
     content: initialData?.content || '',
@@ -76,7 +76,7 @@ export function NewsForm({ initialData, isEditing = false }: NewsFormProps) {
   };
 
   // Inicializar formulário
-  const form = useForm<FormValues>({
+  const form = useForm<NewsFormValues>({
     resolver: zodResolver(newsFormSchema),
     defaultValues,
   });
@@ -103,7 +103,7 @@ export function NewsForm({ initialData, isEditing = false }: NewsFormProps) {
   };
 
   // Enviar formulário
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: NewsFormValues) => {
     setIsSubmitting(true);
 
     try {

@@ -87,7 +87,7 @@ export default function LoginPage() {
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center mb-6">
             <Image
-              src="/images/logo.png"
+              src="logo.svg"
               alt="Logo Sindicato dos Estivadores de Rio Grande"
               width={80}
               height={80}
