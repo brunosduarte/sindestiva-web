@@ -7,8 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import dynamic from 'next/dynamic'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import { DateRange as CalendarDateRange } from 'react-day-picker'
 
 // Importar componentes Lucide
 import { Loader2, Save, X, Calendar } from 'lucide-react'
@@ -338,7 +337,7 @@ export function NewsForm({ initialData, isEditing = false }: NewsFormProps) {
                       <FormLabel>Data de Publicação</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <DatePicker
+                          <CalendarDateRange
                             selected={field.value}
                             onChange={(date: Date | null) =>
                               field.onChange(date)
