@@ -1,12 +1,28 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Suspense } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { NewsCard } from '@/components/NewsCard';
-import { Skeleton } from '@/components/ui/skeleton';
-import { getLatestNews } from '@/lib/api';
-import { ArrowRight, Ship, Award, FileText, Briefcase, Users, Ambulance, Handshake } from 'lucide-react';
+import Image from 'next/image'
+import Link from 'next/link'
+import { Suspense } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { NewsCard } from '@/components/NewsCard'
+import { Skeleton } from '@/components/ui/skeleton'
+import { getLatestNews } from '@/lib/api'
+import {
+  ArrowRight,
+  Ship,
+  Award,
+  FileText,
+  Briefcase,
+  Users,
+  Ambulance,
+  Handshake,
+} from 'lucide-react'
 
 // Componente de carregamento para notícias
 function NewsCardSkeleton() {
@@ -22,7 +38,7 @@ function NewsCardSkeleton() {
         </div>
       </div>
     </Card>
-  );
+  )
 }
 
 function NewsLoading() {
@@ -32,7 +48,7 @@ function NewsLoading() {
         <NewsCardSkeleton key={i} />
       ))}
     </div>
-  );
+  )
 }
 
 export default async function Home() {
@@ -55,14 +71,17 @@ export default async function Home() {
               Sindicato dos Estivadores de Rio Grande
             </h1>
             <p className="text-xl text-gray-300 mb-8">
-              Defendendo os direitos e representando os interesses da categoria desde sua fundação. Juntos somos mais fortes!
+              Defendendo os direitos e representando os interesses da categoria
+              desde sua fundação. Juntos somos mais fortes!
             </p>
             <div className="flex flex-wrap gap-4">
               <Button asChild variant="destructive" size="lg">
                 <Link href="/sobre">Conheça Nossa História</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link href="/contato" className='text-slate-600'>Entre em Contato</Link>
+                <Link href="/contato" className="text-slate-600">
+                  Entre em Contato
+                </Link>
               </Button>
             </div>
           </div>
@@ -75,12 +94,13 @@ export default async function Home() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Nossos Serviços</h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              O Sindicato dos Estivadores de Rio Grande oferece diversos serviços para apoiar os trabalhadores portuários e suas famílias.
+              O Sindicato dos Estivadores de Rio Grande oferece diversos
+              serviços para apoiar os trabalhadores portuários e suas famílias.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="transition-all hover:shadow-md">
+            <Card className="transition-all hover:shadow-md">
               <CardHeader>
                 <div className="bg-primary/10 p-3 w-fit rounded-lg mb-4">
                   <Handshake className="h-6 w-6 text-primary" />
@@ -89,10 +109,18 @@ export default async function Home() {
                 <CardDescription>Lutando sempre pela categoria</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Dedicação e valorização ao trabalho portuário, defendendo os direitos do trabalhador e sempre lutando por melhores condições e aprimoramento do trabalho.</p>
+                <p>
+                  Dedicação e valorização ao trabalho portuário, defendendo os
+                  direitos do trabalhador e sempre lutando por melhores
+                  condições e aprimoramento do trabalho.
+                </p>
               </CardContent>
               <CardFooter>
-                <Button asChild variant="ghost" className="p-0 flex items-center text-primary">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="p-0 flex items-center text-primary"
+                >
                   <Link href="/servicos#capacitacao">
                     Saiba Mais <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
@@ -106,13 +134,22 @@ export default async function Home() {
                   <Ambulance className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle>Assistência Médica</CardTitle>
-                <CardDescription>Cuidando da saúde dos trabalhadores</CardDescription>
+                <CardDescription>
+                  Cuidando da saúde dos trabalhadores
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Convênios médicos, odontológicos e atendimento especializado para trabalhadores associados e seus dependentes.</p>
+                <p>
+                  Convênios médicos, odontológicos e atendimento especializado
+                  para trabalhadores associados e seus dependentes.
+                </p>
               </CardContent>
               <CardFooter>
-                <Button asChild variant="ghost" className="p-0 flex items-center text-primary">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="p-0 flex items-center text-primary"
+                >
                   <Link href="/servicos#saude">
                     Saiba Mais <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
@@ -126,21 +163,29 @@ export default async function Home() {
                   <FileText className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle>Assessoria Jurídica</CardTitle>
-                <CardDescription>Suporte especializado em questões trabalhistas</CardDescription>
+                <CardDescription>
+                  Suporte especializado em questões trabalhistas
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Oferecemos consultoria jurídica para questões relacionadas a direitos trabalhistas, previdência e outros assuntos relevantes para a categoria.</p>
+                <p>
+                  Oferecemos consultoria jurídica para questões relacionadas a
+                  direitos trabalhistas, previdência e outros assuntos
+                  relevantes para a categoria.
+                </p>
               </CardContent>
               <CardFooter>
-                <Button asChild variant="ghost" className="p-0 flex items-center text-primary">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="p-0 flex items-center text-primary"
+                >
                   <Link href="/servicos#juridico">
                     Saiba Mais <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </CardFooter>
             </Card>
-
-
           </div>
         </div>
       </section>
@@ -170,38 +215,50 @@ export default async function Home() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Quem Somos</h2>
               <p className="text-lg mb-4">
-                O Sindicato dos Estivadores de Rio Grande é uma entidade que representa e defende os interesses dos trabalhadores portuários da região desde sua fundação.
+                O Sindicato dos Estivadores de Rio Grande é uma entidade que
+                representa e defende os interesses dos trabalhadores portuários
+                da região desde sua fundação.
               </p>
               <p className="text-lg mb-6">
-                Nosso compromisso é lutar por melhores condições de trabalho, segurança, capacitação profissional e bem-estar dos associados e suas famílias.
+                Nosso compromisso é lutar por melhores condições de trabalho,
+                segurança, capacitação profissional e bem-estar dos associados e
+                suas famílias.
               </p>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="flex items-start gap-2">
                   <Ship className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold">Tradição</h3>
-                    <p className="text-sm text-muted-foreground">Décadas de história e luta</p>
+                    <p className="text-sm text-muted-foreground">
+                      Décadas de história e luta
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <Users className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold">Representatividade</h3>
-                    <p className="text-sm text-muted-foreground">Forte atuação sindical</p>
+                    <p className="text-sm text-muted-foreground">
+                      Forte atuação sindical
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <Briefcase className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold">Profissionalismo</h3>
-                    <p className="text-sm text-muted-foreground">Excelência no trabalho</p>
+                    <p className="text-sm text-muted-foreground">
+                      Excelência no trabalho
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <Award className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold">Compromisso</h3>
-                    <p className="text-sm text-muted-foreground">Dedicação aos associados</p>
+                    <p className="text-sm text-muted-foreground">
+                      Dedicação aos associados
+                    </p>
                   </div>
                 </div>
               </div>
@@ -220,27 +277,24 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
     </div>
-  );
+  )
 }
 
 // Componente para buscar e exibir as últimas notícias
 async function LatestNewsSection() {
   // Buscar últimas notícias (limite de 3)
-  const latestNews = await getLatestNews(3);
+  const latestNews = await getLatestNews(3)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {latestNews && latestNews.length > 0 ? (
-        latestNews.map((news) => (
-          <NewsCard key={news._id} news={news} />
-        ))
+        latestNews.map((news) => <NewsCard key={news._id} news={news} />)
       ) : (
         <p className="col-span-full text-center text-gray-500">
           Nenhuma notícia encontrada.
         </p>
       )}
     </div>
-  );
+  )
 }

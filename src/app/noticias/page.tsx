@@ -1,27 +1,28 @@
-import { Suspense } from 'react';
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { Newspaper, Search, Tag } from 'lucide-react';
+import { Suspense } from 'react'
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { Newspaper, Search, Tag } from 'lucide-react'
 
-import { getAllNews } from '@/lib/api';
-import { NewsCard } from '@/components/NewsCard';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { getAllNews } from '@/lib/api'
+import { NewsCard } from '@/components/NewsCard'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
+import { Card, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const metadata: Metadata = {
   title: 'Notícias',
-  description: 'Últimas notícias e comunicados do Sindicato dos Estivadores de Rio Grande',
-};
+  description:
+    'Últimas notícias e comunicados do Sindicato dos Estivadores de Rio Grande',
+}
 
 interface NewsPageProps {
   searchParams: {
-    page?: string;
-    search?: string;
-    tag?: string;
-  };
+    page?: string
+    search?: string
+    tag?: string
+  }
 }
 
 // Componente de loading para notícias
@@ -35,7 +36,7 @@ function NewsCardSkeleton() {
         <Skeleton className="h-4 w-2/3" />
       </div>
     </div>
-  );
+  )
 }
 
 function NewsLoading() {
@@ -45,21 +46,27 @@ function NewsLoading() {
         <NewsCardSkeleton key={i} />
       ))}
     </div>
-  );
+  )
 }
 
 export default async function NewsPage({ searchParams }: NewsPageProps) {
-  const page = searchParams.page ? parseInt(searchParams.page) : 1;
-  const search = searchParams.search || '';
-  const tag = searchParams.tag || '';
-  
-  const { data: news, pagination } = await getAllNews(page, 9, tag, search);
+  const page = searchParams.page ? parseInt(searchParams.page) : 1
+  const search = searchParams.search || ''
+  const tag = searchParams.tag || ''
+
+  const { data: news, pagination } = await getAllNews(page, 9, tag, search)
 
   // Lista de tags populares para filtro
   const popularTags = [
-    'Notícias', 'Eventos', 'Comunicados', 'Assembleia', 'Porto', 
-    'Benefícios', 'Jurídico', 'Saúde'
-  ];
+    'Notícias',
+    'Eventos',
+    'Comunicados',
+    'Assembleia',
+    'Porto',
+    'Benefícios',
+    'Jurídico',
+    'Saúde',
+  ]
 
   return (
     <div className="container mx-auto py-12 px-4">
@@ -70,17 +77,18 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
             Notícias
           </h1>
           <p className="text-muted-foreground mt-1">
-            Fique por dentro das últimas novidades do Sindicato dos Estivadores de Rio Grande
+            Fique por dentro das últimas novidades do Sindicato dos Estivadores
+            de Rio Grande
           </p>
         </div>
-        
+
         <div className="w-full md:w-auto">
           <form className="relative w-full md:w-64">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <Input 
-              type="search" 
-              name="search" 
-              placeholder="Buscar notícias..." 
+            <Input
+              type="search"
+              name="search"
+              placeholder="Buscar notícias..."
               className="pl-8 w-full"
               defaultValue={search}
             />
@@ -100,11 +108,13 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
             ) : (
               <div className="text-center py-12 border rounded-lg">
                 <Newspaper className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Nenhuma notícia encontrada</h3>
+                <h3 className="text-lg font-semibold mb-2">
+                  Nenhuma notícia encontrada
+                </h3>
                 <p className="text-muted-foreground mb-6">
-                  {search 
+                  {search
                     ? `Não encontramos resultados para "${search}"`
-                    : tag 
+                    : tag
                       ? `Não há notícias com a tag "${tag}"`
                       : 'Não há notícias disponíveis no momento'}
                 </p>
@@ -121,34 +131,34 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
               {page > 1 && (
                 <Button asChild variant="outline">
                   <Link
-                    href={{ 
+                    href={{
                       pathname: '/noticias',
-                      query: { 
+                      query: {
                         ...(search ? { search } : {}),
                         ...(tag ? { tag } : {}),
-                        page: page - 1 
-                      }
+                        page: page - 1,
+                      },
                     }}
                   >
                     Anterior
                   </Link>
                 </Button>
               )}
-              
+
               <span className="flex items-center px-4">
                 Página {page} de {pagination.totalPages}
               </span>
-              
+
               {page < pagination.totalPages && (
                 <Button asChild variant="outline">
                   <Link
-                    href={{ 
+                    href={{
                       pathname: '/noticias',
-                      query: { 
+                      query: {
                         ...(search ? { search } : {}),
                         ...(tag ? { tag } : {}),
-                        page: page + 1 
-                      }
+                        page: page + 1,
+                      },
                     }}
                   >
                     Próxima
@@ -172,14 +182,12 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
                 {popularTags.map((tagName) => (
                   <Button
                     key={tagName}
-                    variant={tag === tagName ? "default" : "outline"}
+                    variant={tag === tagName ? 'default' : 'outline'}
                     size="sm"
                     asChild
                     className="rounded-full"
                   >
-                    <Link href={`/noticias?tag=${tagName}`}>
-                      {tagName}
-                    </Link>
+                    <Link href={`/noticias?tag=${tagName}`}>{tagName}</Link>
                   </Button>
                 ))}
               </div>
@@ -192,7 +200,8 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
               <h3 className="font-semibold mb-4">Sobre o Sindicato</h3>
               <Separator className="mb-4" />
               <p className="text-sm text-muted-foreground mb-4">
-                O Sindicato dos Estivadores de Rio Grande luta pelos direitos e pelo bem-estar da categoria desde sua fundação.
+                O Sindicato dos Estivadores de Rio Grande luta pelos direitos e
+                pelo bem-estar da categoria desde sua fundação.
               </p>
               <Button asChild variant="outline" className="w-full">
                 <Link href="/sobre">Saiba Mais</Link>
@@ -202,5 +211,5 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

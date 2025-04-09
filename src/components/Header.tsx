@@ -1,13 +1,13 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { useSession, signOut } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { useSession, signOut } from 'next-auth/react'
+import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,8 +15,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Menu, X, User, LogOut, FileText } from 'lucide-react';
+} from '@/components/ui/dropdown-menu'
+import { Menu, X, User, LogOut, FileText } from 'lucide-react'
 
 // Links públicos visíveis para todos os usuários
 const publicMenuItems = [
@@ -26,25 +26,25 @@ const publicMenuItems = [
   { label: 'História', href: '/historia' },
   { label: 'Serviços', href: '/servicos' },
   { label: 'Contato', href: '/contato' },
-];
+]
 
 export function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const pathname = usePathname();
-  const { data: session } = useSession();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const { data: session } = useSession()
 
   const handleSignOut = () => {
-    signOut({ callbackUrl: '/' });
-  };
+    signOut({ callbackUrl: '/' })
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b shadow-sm dark:bg-gray-950 dark:border-gray-800">
       <div className="container flex items-center justify-between h-16 px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <Image 
-            src="logo.svg" 
-            alt="Sindestiva Rio Grande" 
-            width={150} 
+          <Image
+            src="logo.svg"
+            alt="Sindestiva Rio Grande"
+            width={150}
             height={150}
             className="h-10 w-auto"
           />
@@ -74,9 +74,15 @@ export function Header() {
           {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                <Button
+                  variant="ghost"
+                  className="relative h-9 w-9 rounded-full"
+                >
                   <Avatar className="h-9 w-9">
-                    <AvatarImage src="/images/avatar.png" alt={session.user.name} />
+                    <AvatarImage
+                      src="/images/avatar.png"
+                      alt={session.user.name}
+                    />
                     <AvatarFallback>
                       {session.user.name?.charAt(0).toUpperCase()}
                     </AvatarFallback>
@@ -86,7 +92,9 @@ export function Header() {
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{session.user.name}</p>
+                    <p className="text-sm font-medium leading-none">
+                      {session.user.name}
+                    </p>
                     <p className="text-xs leading-none text-muted-foreground">
                       {session.user.email}
                     </p>
@@ -164,42 +172,68 @@ export function Header() {
                     <div className="space-y-4">
                       <div className="flex items-center gap-2 pb-4 border-b">
                         <Avatar className="h-9 w-9">
-                          <AvatarImage src="/images/avatar.png" alt={session.user.name} />
+                          <AvatarImage
+                            src="/images/avatar.png"
+                            alt={session.user.name}
+                          />
                           <AvatarFallback>
                             {session.user.name?.charAt(0).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <div className="text-sm font-medium">{session.user.name}</div>
-                          <div className="text-xs text-muted-foreground">{session.user.email}</div>
+                          <div className="text-sm font-medium">
+                            {session.user.name}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {session.user.email}
+                          </div>
                         </div>
                       </div>
                       <div className="grid gap-2">
-                        <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)}>
-                          <Button variant="outline" className="w-full justify-start">
+                        <Link
+                          href="/admin"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start"
+                          >
                             <FileText className="w-4 h-4 mr-2" />
                             Painel Administrativo
                           </Button>
                         </Link>
-                        <Link href="/admin/noticias" onClick={() => setIsMobileMenuOpen(false)}>
-                          <Button variant="outline" className="w-full justify-start">
+                        <Link
+                          href="/admin/noticias"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start"
+                          >
                             <FileText className="w-4 h-4 mr-2" />
                             Gerenciar Notícias
                           </Button>
                         </Link>
-                        <Link href="/admin/perfil" onClick={() => setIsMobileMenuOpen(false)}>
-                          <Button variant="outline" className="w-full justify-start">
+                        <Link
+                          href="/admin/perfil"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start"
+                          >
                             <User className="w-4 h-4 mr-2" />
                             Meu Perfil
                           </Button>
                         </Link>
-                        <Button 
-                          variant="outline" 
-                          className="w-full justify-start" 
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start"
                           onClick={() => {
-                            setIsMobileMenuOpen(false);
-                            handleSignOut();
-                          }}>
+                            setIsMobileMenuOpen(false)
+                            handleSignOut()
+                          }}
+                        >
                           <LogOut className="w-4 h-4 mr-2" />
                           Sair
                         </Button>
@@ -207,7 +241,10 @@ export function Header() {
                     </div>
                   ) : (
                     <Button asChild variant="default" className="w-full">
-                      <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Link
+                        href="/login"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
                         Área Restrita
                       </Link>
                     </Button>
@@ -219,5 +256,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  );
+  )
 }

@@ -1,19 +1,27 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Newspaper, PlusCircle, Edit, Trash2, EyeIcon, Search, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from 'react'
+import Link from 'next/link'
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import {
+  Newspaper,
+  PlusCircle,
+  Edit,
+  Trash2,
+  EyeIcon,
+  Search,
+  Loader2,
+} from 'lucide-react'
+import { toast } from 'sonner'
 
-import { fetchMyNews, fetchNews, deleteNews } from '@/lib/api';
-import { News } from '@/types';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { fetchMyNews, fetchNews, deleteNews } from '@/lib/api'
+import { News } from '@/types'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
 import {
   Table,
   TableBody,
@@ -21,7 +29,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui/table'
 import {
   Dialog,
   DialogContent,
@@ -31,77 +39,75 @@ import {
   DialogTitle,
   // DialogTrigger,
   // DialogClose,
-} from '@/components/ui/dialog';
-import { 
+} from '@/components/ui/dialog'
+import {
   Tabs,
   // TabsContent,
   TabsList,
-  TabsTrigger
-} from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
+  TabsTrigger,
+} from '@/components/ui/tabs'
+import { Separator } from '@/components/ui/separator'
 
 export default function AdminNewsList() {
-  const { data: session } = useSession();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentTab, setCurrentTab] = useState('all');
-  const [page, setPage] = useState(1);
-  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const { data: _session } = useSession()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [currentTab, setCurrentTab] = useState('all')
+  const [page, setPage] = useState(1)
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
 
   // Buscar todas as notícias ou apenas as minhas, dependendo da aba selecionada
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['news', currentTab, page, searchTerm],
     queryFn: () => {
-      const params = { 
-        page, 
+      const params = {
+        page,
         limit: 10,
-        ...(searchTerm ? { search: searchTerm } : {})
-      };
-      
-      return currentTab === 'my' 
-        ? fetchMyNews(params) 
-        : fetchNews(params);
+        ...(searchTerm ? { search: searchTerm } : {}),
+      }
+
+      return currentTab === 'my' ? fetchMyNews(params) : fetchNews(params)
     },
-  });
+  })
 
   // Remover notícia
   const handleDeleteNews = async (id: string) => {
     try {
-      await deleteNews(id);
-      toast.success('Notícia excluída com sucesso');
-      refetch();
-      setDeleteConfirmId(null);
+      await deleteNews(id)
+      toast.success('Notícia excluída com sucesso')
+      refetch()
+      setDeleteConfirmId(null)
     } catch (error) {
-      console.error('Erro ao excluir notícia:', error);
-      toast.error('Erro ao excluir notícia');
+      console.error('Erro ao excluir notícia:', error)
+      toast.error('Erro ao excluir notícia')
     }
-  };
+  }
 
   // Ativar confirmação de exclusão
   const confirmDelete = (id: string) => {
-    setDeleteConfirmId(id);
-  };
+    setDeleteConfirmId(id)
+  }
 
   // Cancelar exclusão
   const cancelDelete = () => {
-    setDeleteConfirmId(null);
-  };
+    setDeleteConfirmId(null)
+  }
 
   // Formatar data
   const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'dd/MM/yyyy', { locale: ptBR });
-  };
+    return format(new Date(dateString), 'dd/MM/yyyy', { locale: ptBR })
+  }
 
   // Lidar com mudança na caixa de pesquisa com debounce
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setPage(1); // Volta para a primeira página quando pesquisa
-  };
+    setSearchTerm(e.target.value)
+    setPage(1) // Volta para a primeira página quando pesquisa
+  }
 
   // Resetar filtros
   const resetFilters = () => {
-    setSearchTerm('');
-    setPage(1);
-  };
+    setSearchTerm('')
+    setPage(1)
+  }
 
   return (
     <div className="space-y-6">
@@ -131,7 +137,11 @@ export default function AdminNewsList() {
           />
         </div>
 
-        <Tabs defaultValue="all" className="w-fit" onValueChange={setCurrentTab}>
+        <Tabs
+          defaultValue="all"
+          className="w-fit"
+          onValueChange={setCurrentTab}
+        >
           <TabsList>
             <TabsTrigger value="all">Todas as Notícias</TabsTrigger>
             <TabsTrigger value="my">Minhas Notícias</TabsTrigger>
@@ -146,14 +156,18 @@ export default function AdminNewsList() {
       ) : isError ? (
         <div className="text-center py-12">
           <p className="text-destructive">Erro ao carregar notícias</p>
-          <Button variant="outline" onClick={() => refetch()} className="mt-4">Tentar novamente</Button>
+          <Button variant="outline" onClick={() => refetch()} className="mt-4">
+            Tentar novamente
+          </Button>
         </div>
       ) : !data || !data.news || data.news.length === 0 ? (
         <div className="text-center py-12 border rounded-lg">
           <Newspaper className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">Nenhuma notícia encontrada</h3>
+          <h3 className="text-lg font-semibold mb-2">
+            Nenhuma notícia encontrada
+          </h3>
           <p className="text-muted-foreground mb-6">
-            {searchTerm 
+            {searchTerm
               ? `Não encontramos resultados para "${searchTerm}"`
               : 'Comece criando sua primeira notícia'}
           </p>
@@ -188,7 +202,9 @@ export default function AdminNewsList() {
                     </TableCell>
                     <TableCell>
                       {news.published ? (
-                        <Badge variant="default" className="bg-green-600">Publicada</Badge>
+                        <Badge variant="default" className="bg-green-600">
+                          Publicada
+                        </Badge>
                       ) : (
                         <Badge variant="secondary">Rascunho</Badge>
                       )}
@@ -208,9 +224,9 @@ export default function AdminNewsList() {
                             <span className="sr-only">Editar</span>
                           </Link>
                         </Button>
-                        <Button 
-                          size="sm" 
-                          variant="ghost" 
+                        <Button
+                          size="sm"
+                          variant="ghost"
                           className="text-destructive hover:text-destructive/90"
                           onClick={() => confirmDelete(news._id)}
                         >
@@ -228,22 +244,24 @@ export default function AdminNewsList() {
           {/* Paginação */}
           {data.pagination && data.pagination.totalPages > 1 && (
             <div className="flex justify-between items-center mt-4">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 disabled={page === 1}
-                onClick={() => setPage(p => Math.max(1, p - 1))}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
               >
                 Anterior
               </Button>
-              
+
               <span className="text-sm">
                 Página {page} de {data.pagination?.totalPages || 1}
               </span>
-              
-              <Button 
-                variant="outline" 
-                disabled={!data.pagination || page >= data.pagination.totalPages}
-                onClick={() => setPage(p => p + 1)}
+
+              <Button
+                variant="outline"
+                disabled={
+                  !data.pagination || page >= data.pagination.totalPages
+                }
+                onClick={() => setPage((p) => p + 1)}
               >
                 Próxima
               </Button>
@@ -253,21 +271,27 @@ export default function AdminNewsList() {
       )}
 
       {/* Diálogo de confirmação para excluir notícia */}
-      <Dialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
+      <Dialog
+        open={!!deleteConfirmId}
+        onOpenChange={() => setDeleteConfirmId(null)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirmar exclusão</DialogTitle>
             <DialogDescription>
-              Tem certeza que deseja excluir esta notícia? Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir esta notícia? Esta ação não pode
+              ser desfeita.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={cancelDelete}>
               Cancelar
             </Button>
-            <Button 
-              variant="destructive" 
-              onClick={() => deleteConfirmId && handleDeleteNews(deleteConfirmId)}
+            <Button
+              variant="destructive"
+              onClick={() =>
+                deleteConfirmId && handleDeleteNews(deleteConfirmId)
+              }
             >
               Excluir
             </Button>
@@ -275,5 +299,5 @@ export default function AdminNewsList() {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }

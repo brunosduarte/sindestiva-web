@@ -1,19 +1,23 @@
-import { ReactNode } from 'react';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { ReactNode } from 'react'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
 
-import { Button } from '@/components/ui/button';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import { Button } from '@/components/ui/button'
+import AdminSidebar from '@/components/admin/AdminSidebar'
 
-export default async function AdminLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({
+  children,
+}: {
+  children: ReactNode
+}) {
   // Verificar se o usuário está autenticado
-  const session = await getServerSession(authOptions);
-  
+  const session = await getServerSession(authOptions)
+
   // Se não estiver autenticado, redirecionar para a página de login
   if (!session) {
-    redirect('/login?callbackUrl=/admin');
+    redirect('/login?callbackUrl=/admin')
   }
 
   return (
@@ -28,7 +32,9 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <h1 className="text-lg font-semibold">Painel Administrativo</h1>
             <div className="flex items-center gap-2">
               <Button asChild variant="outline" size="sm">
-                <Link href="/" target="_blank">Visualizar Site</Link>
+                <Link href="/" target="_blank">
+                  Visualizar Site
+                </Link>
               </Button>
             </div>
           </div>
@@ -39,5 +45,5 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         </main>
       </div>
     </div>
-  );
+  )
 }

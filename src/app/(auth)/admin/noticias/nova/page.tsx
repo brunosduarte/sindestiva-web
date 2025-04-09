@@ -1,9 +1,9 @@
-import { 
+import {
   Newspaper,
   // PlusCircle
-} from 'lucide-react';
-import { NewsForm } from '@/components/NewsForm';
-import { Separator } from '@/components/ui/separator';
+} from 'lucide-react'
+import { NewsForm } from '@/components/NewsForm'
+import { Separator } from '@/components/ui/separator'
 
 export default function CreateNewsPage() {
   return (
@@ -18,5 +18,5 @@ export default function CreateNewsPage() {
       <Separator />
       <NewsForm />
     </div>
-  );
+  )
 }

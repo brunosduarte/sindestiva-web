@@ -1,19 +1,26 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { signIn } from 'next-auth/react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Loader2, Lock } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Loader2, Lock } from 'lucide-react'
+import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -21,26 +28,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+} from '@/components/ui/form'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 
 // Schema de validação
 const loginSchema = z.object({
   email: z.string().email('Digite um email válido'),
   password: z.string().min(6, 'A senha deve conter pelo menos 6 caracteres'),
-});
+})
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   // Obter erro de callback
-  const callbackError = searchParams.get('error');
-  
+  const callbackError = searchParams.get('error')
+
   // Inicializar formulário com react-hook-form e zod
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -48,38 +55,38 @@ export default function LoginPage() {
       email: '',
       password: '',
     },
-  });
+  })
 
   // Função de envio do formulário
   const onSubmit = async (data: LoginFormValues) => {
-    setIsLoading(true);
-    setError(null);
+    setIsLoading(true)
+    setError(null)
 
     try {
       const result = await signIn('credentials', {
         email: data.email,
         password: data.password,
         redirect: false,
-      });
+      })
 
       if (result?.error) {
-        setError('Credenciais inválidas. Verifique seu email e senha.');
-        toast.error('Falha ao fazer login');
+        setError('Credenciais inválidas. Verifique seu email e senha.')
+        toast.error('Falha ao fazer login')
       } else {
-        toast.success('Login realizado com sucesso!');
-        
+        toast.success('Login realizado com sucesso!')
+
         // Redirecionar para a página anterior ou para o painel admin
-        const callbackUrl = searchParams.get('callbackUrl') || '/admin';
-        router.push(callbackUrl);
+        const callbackUrl = searchParams.get('callbackUrl') || '/admin'
+        router.push(callbackUrl)
       }
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
-      setError('Ocorreu um erro durante o login. Tente novamente.');
-      toast.error('Erro ao tentar fazer login');
+      console.error('Erro ao fazer login:', error)
+      setError('Ocorreu um erro durante o login. Tente novamente.')
+      toast.error('Erro ao tentar fazer login')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="container flex items-center justify-center min-h-screen py-12">
@@ -102,9 +109,10 @@ export default function LoginPage() {
           {(error || callbackError) && (
             <Alert variant="destructive">
               <AlertDescription>
-                {error || (callbackError === 'CredentialsSignin' 
-                  ? 'Email ou senha incorretos' 
-                  : 'Erro ao fazer login')}
+                {error ||
+                  (callbackError === 'CredentialsSignin'
+                    ? 'Email ou senha incorretos'
+                    : 'Erro ao fazer login')}
               </AlertDescription>
             </Alert>
           )}
@@ -131,7 +139,11 @@ export default function LoginPage() {
                   <FormItem>
                     <FormLabel>Senha</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="••••••••"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,7 +164,7 @@ export default function LoginPage() {
               </Button>
             </form>
           </Form>
-          
+
           <div className="text-sm text-center text-muted-foreground mt-4">
             <p>Este acesso é exclusivo para administradores do site.</p>
             <p>Se você é um visitante, pode navegar pelo site normalmente.</p>
@@ -168,5 +180,5 @@ export default function LoginPage() {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }

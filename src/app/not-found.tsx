@@ -1,16 +1,16 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export default function NotFound() {
   return (
     <div className="flex items-center justify-center min-h-[70vh] px-4 py-16">
       <div className="flex flex-col items-center max-w-md text-center">
         <div className="relative w-40 h-40 mb-6">
-          <Image 
-            src="logo.svg" 
-            alt="Logo Sindicato dos Estivadores de Rio Grande" 
+          <Image
+            src="logo.svg"
+            alt="Logo Sindicato dos Estivadores de Rio Grande"
             fill
             style={{ objectFit: 'contain' }}
           />
@@ -18,7 +18,8 @@ export default function NotFound() {
         <h1 className="text-6xl font-bold text-primary mb-4">404</h1>
         <h2 className="text-2xl font-semibold mb-2">Página não encontrada</h2>
         <p className="text-muted-foreground mb-8">
-          A página que você está procurando não existe ou foi movida para outro endereço.
+          A página que você está procurando não existe ou foi movida para outro
+          endereço.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button asChild size="lg">
@@ -33,5 +34,5 @@ export default function NotFound() {
         </div>
       </div>
     </div>
-  );
+  )
 }

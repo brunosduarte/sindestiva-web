@@ -1,25 +1,29 @@
-import { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { loginUser } from './api';
+import { NextAuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { loginUser } from './api'
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'email@example.com' },
+        email: {
+          label: 'Email',
+          type: 'email',
+          placeholder: 'email@example.com',
+        },
         password: { label: 'Senha', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          return null
         }
 
         try {
           const response = await loginUser({
             email: credentials.email,
             password: credentials.password,
-          });
+          })
 
           if (response.token && response.user) {
             return {
@@ -28,12 +32,12 @@ export const authOptions: NextAuthOptions = {
               email: response.user.email,
               role: response.user.role,
               token: response.token,
-            };
+            }
           }
-          return null;
+          return null
         } catch (error) {
-          console.error('Erro na autenticação:', error);
-          return null;
+          console.error('Erro na autenticação:', error)
+          return null
         }
       },
     }),
@@ -41,19 +45,19 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.role = user.role;
-        token.accessToken = user.token;
+        token.id = user.id
+        token.role = user.role
+        token.accessToken = user.token
       }
-      return token;
+      return token
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
-        session.accessToken = token.accessToken as string;
+        session.user.id = token.id as string
+        session.user.role = token.role as string
+        session.accessToken = token.accessToken as string
       }
-      return session;
+      return session
     },
   },
   pages: {
@@ -65,31 +69,31 @@ export const authOptions: NextAuthOptions = {
     maxAge: 24 * 60 * 60, // 1 dia
   },
   secret: process.env.NEXTAUTH_SECRET,
-};
+}
 
 // Tipos do NextAuth
 declare module 'next-auth' {
   interface User {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    token: string;
+    id: string
+    name: string
+    email: string
+    role: string
+    token: string
   }
 
   interface Session {
     user: User & {
-      id: string;
-      role: string;
-    };
-    accessToken: string;
+      id: string
+      role: string
+    }
+    accessToken: string
   }
 }
 
 declare module 'next-auth/jwt' {
   interface JWT {
-    id: string;
-    role: string;
-    accessToken: string;
+    id: string
+    role: string
+    accessToken: string
   }
 }

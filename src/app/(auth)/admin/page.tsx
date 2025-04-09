@@ -1,12 +1,25 @@
-import Link from 'next/link';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Newspaper, PlusCircle, Users, Eye, Clock, AlertCircle } from 'lucide-react';
+import Link from 'next/link'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import {
+  Newspaper,
+  PlusCircle,
+  Users,
+  Eye,
+  Clock,
+  AlertCircle,
+} from 'lucide-react'
 
 export default async function AdminDashboard() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
 
   // Em produção, você buscaria essas informações da API
   const dashboardStats = {
@@ -15,7 +28,7 @@ export default async function AdminDashboard() {
     publishedNews: 9,
     recentViews: 156,
     totalUsers: 5,
-  };
+  }
 
   return (
     <div className="space-y-6">
@@ -31,27 +44,32 @@ export default async function AdminDashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Notícias</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total de Notícias
+            </CardTitle>
             <Newspaper className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{dashboardStats.totalNews}</div>
             <p className="text-xs text-muted-foreground">
-              {dashboardStats.publishedNews} publicadas, {dashboardStats.draftNews} rascunhos
+              {dashboardStats.publishedNews} publicadas,{' '}
+              {dashboardStats.draftNews} rascunhos
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Visualizações Recentes</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Visualizações Recentes
+            </CardTitle>
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{dashboardStats.recentViews}</div>
-            <p className="text-xs text-muted-foreground">
-              Nos últimos 7 dias
-            </p>
+            <div className="text-2xl font-bold">
+              {dashboardStats.recentViews}
+            </div>
+            <p className="text-xs text-muted-foreground">Nos últimos 7 dias</p>
           </CardContent>
         </Card>
 
@@ -61,7 +79,9 @@ export default async function AdminDashboard() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{dashboardStats.totalUsers}</div>
+            <div className="text-2xl font-bold">
+              {dashboardStats.totalUsers}
+            </div>
             <p className="text-xs text-muted-foreground">
               Administradores e editores
             </p>
@@ -70,7 +90,9 @@ export default async function AdminDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Notícias Pendentes</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Notícias Pendentes
+            </CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -110,7 +132,7 @@ export default async function AdminDashboard() {
             )}
           </CardContent>
         </Card>
-        
+
         <Card className="col-span-1">
           <CardHeader>
             <CardTitle>Notificações</CardTitle>
@@ -125,17 +147,19 @@ export default async function AdminDashboard() {
                 <div className="space-y-1">
                   <p className="text-sm font-medium">Lembrete</p>
                   <p className="text-sm text-muted-foreground">
-                    Você tem {dashboardStats.draftNews} notícias em rascunho que precisam ser revisadas.
+                    Você tem {dashboardStats.draftNews} notícias em rascunho que
+                    precisam ser revisadas.
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4 rounded-lg border p-4">
                 <AlertCircle className="h-5 w-5 text-blue-500 mt-0.5" />
                 <div className="space-y-1">
                   <p className="text-sm font-medium">Dica</p>
                   <p className="text-sm text-muted-foreground">
-                    Imagens de alta qualidade melhoram o engajamento nas notícias.
+                    Imagens de alta qualidade melhoram o engajamento nas
+                    notícias.
                   </p>
                 </div>
               </div>
@@ -144,5 +168,5 @@ export default async function AdminDashboard() {
         </Card>
       </div>
     </div>
-  );
+  )
 }

@@ -1,38 +1,34 @@
-import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Metadata } from 'next';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { 
-  ArrowLeft, 
-  Calendar, 
-  User, 
-  Tag,
-  Share2
-} from 'lucide-react';
+import { notFound } from 'next/navigation'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Metadata } from 'next'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { ArrowLeft, Calendar, User, Tag, Share2 } from 'lucide-react'
 
-import { getNewsDetails, getLatestNews } from '@/lib/api';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { getNewsDetails, getLatestNews } from '@/lib/api'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface NewsDetailPageProps {
   params: {
-    id: string;
-  };
+    id: string
+  }
 }
 
 // Gerar metadados dinâmicos
-export async function generateMetadata({ params }: NewsDetailPageProps): Promise<Metadata> {
-  const news = await getNewsDetails(params.id);
-  
+export async function generateMetadata({
+  params,
+}: NewsDetailPageProps): Promise<Metadata> {
+  const news = await getNewsDetails(params.id)
+
   if (!news) {
     return {
       title: 'Notícia não encontrada',
-    };
+    }
   }
 
   return {
@@ -43,7 +39,7 @@ export async function generateMetadata({ params }: NewsDetailPageProps): Promise
       description: news.summary,
       images: news.imageUrl ? [news.imageUrl] : [],
     },
-  };
+  }
 }
 
 // Componente de carregamento
@@ -64,33 +60,33 @@ export function NewsDetailSkeleton() {
         <Skeleton className="h-6 w-full" />
       </div>
     </div>
-  );
+  )
 }
 
 export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
-  const { id } = params;
-  
-  const news = await getNewsDetails(id);
-  
+  const { id } = params
+
+  const news = await getNewsDetails(id)
+
   if (!news) {
-    notFound();
+    notFound()
   }
 
   // Formatar data de publicação
   const formattedDate = format(
-    new Date(news.publishDate), 
-    "dd 'de' MMMM 'de' yyyy", 
-    { locale: ptBR }
-  );
+    new Date(news.publishDate),
+    "dd 'de' MMMM 'de' yyyy",
+    { locale: ptBR },
+  )
 
   // Buscar notícias relacionadas (últimas 3, excluindo a atual)
-  const latestNews = await getLatestNews(4);
-  const relatedNews = latestNews.filter(item => item._id !== id).slice(0, 3);
+  const latestNews = await getLatestNews(4)
+  const relatedNews = latestNews.filter((item) => item._id !== id).slice(0, 3)
 
   // Extrair nome do autor
-  let authorName = 'Sindicato dos Estivadores';
+  let authorName = 'Sindicato dos Estivadores'
   if (typeof news.author === 'object' && news.author && 'name' in news.author) {
-    authorName = news.author.name;
+    authorName = news.author.name
   }
 
   return (
@@ -105,8 +101,10 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
           </Button>
 
           <article className="space-y-6 max-w-3xl">
-            <h1 className="text-3xl md:text-4xl font-bold leading-tight">{news.title}</h1>
-            
+            <h1 className="text-3xl md:text-4xl font-bold leading-tight">
+              {news.title}
+            </h1>
+
             <div className="flex flex-wrap gap-3 items-center text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <Calendar className="h-4 w-4" />
@@ -143,11 +141,14 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             )}
 
             <div className="mt-4 text-lg leading-relaxed">
-              <div className="news-content prose prose-blue max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: news.content }} />
+              <div
+                className="news-content prose prose-blue max-w-none dark:prose-invert"
+                dangerouslySetInnerHTML={{ __html: news.content }}
+              />
             </div>
-            
+
             <Separator className="my-8" />
-            
+
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Share2 className="h-5 w-5 text-muted-foreground" />
@@ -155,23 +156,35 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" asChild>
-                  <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                    typeof window !== 'undefined' ? window.location.href : ''
-                  )}`} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                      typeof window !== 'undefined' ? window.location.href : '',
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Facebook
                   </a>
                 </Button>
                 <Button variant="outline" size="sm" asChild>
-                  <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                    typeof window !== 'undefined' ? window.location.href : ''
-                  )}&text=${encodeURIComponent(news.title)}`} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                      typeof window !== 'undefined' ? window.location.href : '',
+                    )}&text=${encodeURIComponent(news.title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Twitter
                   </a>
                 </Button>
                 <Button variant="outline" size="sm" asChild>
-                  <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                    `${news.title} - ${typeof window !== 'undefined' ? window.location.href : ''}`
-                  )}`} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                      `${news.title} - ${typeof window !== 'undefined' ? window.location.href : ''}`,
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     WhatsApp
                   </a>
                 </Button>
@@ -188,20 +201,22 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             <CardContent className="space-y-4">
               {relatedNews.length > 0 ? (
                 relatedNews.map((item) => (
-                  <div key={item._id} className="border-b last:border-b-0 pb-4 last:pb-0">
+                  <div
+                    key={item._id}
+                    className="border-b last:border-b-0 pb-4 last:pb-0"
+                  >
                     <Link
                       href={`/noticias/${item._id}`}
-                      className="font-medium hover:text-primary transition-colors">
+                      className="font-medium hover:text-primary transition-colors"
+                    >
                       {item.title}
                     </Link>
                     <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
                       <Calendar className="h-3 w-3" />
                       <span>
-                        {format(
-                          new Date(item.publishDate),
-                          "dd/MM/yyyy",
-                          { locale: ptBR }
-                        )}
+                        {format(new Date(item.publishDate), 'dd/MM/yyyy', {
+                          locale: ptBR,
+                        })}
                       </span>
                     </div>
                   </div>
@@ -220,9 +235,9 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                O Sindicato dos Estivadores de Rio Grande trabalha 
-                constantemente para manter a categoria informada sobre 
-                todas as questões relevantes do setor portuário.
+                O Sindicato dos Estivadores de Rio Grande trabalha
+                constantemente para manter a categoria informada sobre todas as
+                questões relevantes do setor portuário.
               </p>
               <Button asChild variant="outline" className="w-full">
                 <Link href="/sobre">Conheça nossa história</Link>
@@ -235,5 +250,5 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       'picsum.photos',
       'via.placeholder.com',
       'sindestiva.com.br',
-      'estivadoresriogrande.org.br'
+      'estivadoresriogrande.org.br',
     ],
   },
   experimental: {
@@ -27,8 +27,8 @@ const nextConfig: NextConfig = {
           { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
         ],
       },
-    ];
+    ]
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig
