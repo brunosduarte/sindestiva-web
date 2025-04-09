@@ -59,7 +59,7 @@ export interface NewsFormData {
   summary: string
   imageUrl?: string
   published: boolean
-  publishDate?: string
+  publishDate: string
   tags?: string[]
 }
 
@@ -68,34 +68,4 @@ export interface NewsQueryParams {
   limit?: number
   tag?: string
   search?: string
-}
-
-export interface NewsFormValues {
-  title: string
-  content: string
-  summary: string
-  imageUrl?: string
-  published: boolean
-  publishDate: Date | string
-  tags: string | string[]
-}
-
-export interface FieldValues {
-  title: string
-  content: string
-  summary: string
-  imageUrl?: string
-  published: boolean
-  publishDate: Date | string
-  tags: string | string[]
-}
-
-export interface ResolverOptions<_TFieldValues> {
-  title: string
-  content: string
-  summary: string
-  published: boolean
-  imageUrl?: string
-  publishDate?: Date
-  tags?: string
 }

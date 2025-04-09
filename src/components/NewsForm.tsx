@@ -7,10 +7,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import dynamic from 'next/dynamic'
-import { DateRange as CalendarDateRange } from 'react-day-picker'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 // Importar componentes Lucide
-import { Loader2, Save, X, Calendar } from 'lucide-react'
+import { Loader2, Save, X, Calendar as CalendarIcon } from 'lucide-react'
 
 // Importar componentes UI
 import { Button } from '@/components/ui/button'
@@ -29,12 +30,17 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent } from '@/components/ui/card'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
 import 'react-quill/dist/quill.snow.css'
 
 // Importar tipos e funções de API
 import { News, NewsFormData } from '@/types'
 import { createNews, updateNews } from '@/lib/api'
-import { ptBR } from 'date-fns/locale'
 
 // Importar React Quill dinamicamente para evitar erros SSR
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
@@ -46,7 +52,7 @@ const newsFormSchema = z.object({
   content: z.string().min(20, 'O conteúdo deve ter pelo menos 20 caracteres'),
   imageUrl: z.string().url('URL inválida').optional().or(z.literal('')),
   published: z.boolean().default(false),
-  publishDate: z.date().optional(),
+  publishDate: z.date(),
   tags: z.string().optional(),
 })
 
@@ -119,16 +125,12 @@ export function NewsForm({ initialData, isEditing = false }: NewsFormProps) {
               .map((tag) => tag.trim())
               .filter(Boolean)
           : [],
+        publishDate: data.publishDate.toISOString(),
       }
 
       // Adicionar URL da imagem se existir
       if (data.imageUrl) {
         formData.imageUrl = data.imageUrl
-      }
-
-      // Adicionar data de publicação se existir
-      if (data.publishDate) {
-        formData.publishDate = data.publishDate.toISOString()
       }
 
       // Criar nova notícia ou atualizar existente
@@ -177,9 +179,11 @@ export function NewsForm({ initialData, isEditing = false }: NewsFormProps) {
   const removeTag = (tagToRemove: string) => {
     const currentTags = form.getValues('tags') || ''
     const tagsArray = currentTags
-      .split(',')
-      .map((t) => t.trim())
-      .filter(Boolean)
+      ? currentTags
+          .split(',')
+          .map((t) => t.trim())
+          .filter(Boolean)
+      : []
     const newTags = tagsArray.filter((tag) => tag !== tagToRemove).join(', ')
     form.setValue('tags', newTags, { shouldValidate: true })
   }
@@ -333,22 +337,37 @@ export function NewsForm({ initialData, isEditing = false }: NewsFormProps) {
                   control={form.control}
                   name="publishDate"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="flex flex-col">
                       <FormLabel>Data de Publicação</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <CalendarDateRange
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={'outline'}
+                              className={`w-full pl-3 text-left font-normal ${!field.value && 'text-muted-foreground'}`}
+                            >
+                              {field.value ? (
+                                format(field.value, "dd 'de' MMMM 'de' yyyy", {
+                                  locale: ptBR,
+                                })
+                              ) : (
+                                <span>Selecione uma data</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
                             selected={field.value}
-                            onChange={(date: Date | null) =>
-                              field.onChange(date)
-                            }
+                            onSelect={field.onChange}
+                            disabled={(date) => date < new Date('1900-01-01')}
                             locale={ptBR}
-                            dateFormat="dd/MM/yyyy"
-                            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                            initialFocus
                           />
-                          <Calendar className="absolute right-3 top-2.5 h-4 w-4 text-gray-500" />
-                        </div>
-                      </FormControl>
+                        </PopoverContent>
+                      </Popover>
                       <FormDescription>
                         Quando a notícia deve ser publicada.
                       </FormDescription>

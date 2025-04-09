@@ -268,9 +268,10 @@ export default async function Home() {
             </div>
             <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
               <Image
-                src="/images/estivadores.jpg"
+                src="/estiva.jpg"
                 alt="Estivadores trabalhando no porto"
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
               />
             </div>
@@ -284,7 +285,7 @@ export default async function Home() {
 // Componente para buscar e exibir as últimas notícias
 async function LatestNewsSection() {
   // Buscar últimas notícias (limite de 3)
-  const latestNews = await getLatestNews(3)
+  const latestNews = await getLatestNews(9)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
