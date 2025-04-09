@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Roboto_Mono as RobotoMono } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 import { Header } from '@/components/Header'
@@ -7,7 +7,17 @@ import { Footer } from '@/components/Footer'
 import { AuthProvider } from '@/components/AuthProvider'
 import { QueryProvider } from '@/components/QueryProvider'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const robotoMono = RobotoMono({
+  subsets: ['latin'],
+  variable: '--font-roboto-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -35,11 +45,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html
+      lang="pt-BR"
+      className={`${inter.variable} ${robotoMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
         <QueryProvider>
           <AuthProvider>
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col min-h-screen antialiased vsc-initialized">
               <Header />
               <main className="flex-1">{children}</main>
               <Footer />
